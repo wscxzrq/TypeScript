@@ -29,5 +29,5 @@ const ar = new Article();
 ar.title = 'xxx';
 ar.content = 'wjefklwejfkwjefwlfjwelfjwf';
 ar.date = new Date();
-
+  12313123
 printObj(ar)
