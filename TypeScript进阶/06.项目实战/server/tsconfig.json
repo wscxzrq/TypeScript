@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "target":"ES2016",
+        "module": "commonjs",
+        "outDir": "./dist", // 输出目录
+        "experimentalDecorators": true, // 开启装饰器
+        "emitDecoratorMetadata": true, // 将 ts 的类型约束作为装饰器放到元数据里
+        "strictNullChecks": true, // null undefined 只能赋值给自己
+        "removeComments": true, // 移除注释
+        "noEmitOnError": true, // 发生错误不要生成结果
+        "lib": ["ESNext"],
+
+    },
+    "include":["./src"], // 要编译的文件夹
+
+}
