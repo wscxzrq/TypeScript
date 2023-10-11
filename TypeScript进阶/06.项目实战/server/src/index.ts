@@ -3,16 +3,17 @@
 // 验证：class-validator
 
 import 'reflect-metadata'
-import { validate } from 'class-validator'
-import { Movie } from "./entities/Movie";
-import { plainToClass } from 'class-transformer';
-const m:any = {};
-m.name = 123;
-m.types = [1,2,3];
-// 将 plain object 转换为一个 Movie 对象
-const movie = plainToClass(Movie,m as object);
-// movie.name = 23123
-console.log('movie',movie)
-validate(m).then(errors => {
-    console.log('errors',errors)
+import { MovieService } from './services/MovieService'
+const m:any = {
+    name:'23123',
+    poster:'123123',
+    timelong:33,
+    types:['123']
+}
+MovieService.add(m).then(res => {
+    if(Array.isArray(res)) {
+        console.log('res',res)
+    }else {
+        console.log('res._id',res._id)
+    }
 })
