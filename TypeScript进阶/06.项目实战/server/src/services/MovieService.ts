@@ -2,7 +2,7 @@ import { Movie } from './../entities/Movie';
 import { IMovie } from './../db/MovieSchema';
 import { MovieModel } from "../db";
 import { SearchCondition } from '../entities/searchConditions';
-import { ISearchResult, SearchResult } from '../entities/CommonTypes';
+import { ISearchResult } from '../entities/CommonTypes';
 
 export class MovieService {
     public static async add (movie:Movie):Promise<IMovie | string[]> {
