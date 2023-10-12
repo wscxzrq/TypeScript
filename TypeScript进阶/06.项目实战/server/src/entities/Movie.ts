@@ -1,6 +1,7 @@
 import { Type, plainToClass } from 'class-transformer';
 import { ArrayMinSize, IsArray, IsInt, IsNotEmpty, Max, Min, validate } from 'class-validator'
-export class Movie {
+import { BaseEntitly } from './BaseEntitly';
+export class Movie extends BaseEntitly{
     @IsNotEmpty({message:'电影名称不可以为空'})
     @Type(() => String) // 在运行阶段控制类型
     public name:string;
@@ -8,7 +9,7 @@ export class Movie {
     @IsNotEmpty({message:'电影类型不可以为空'})
     @ArrayMinSize(1,{message:'电影类型至少存在一个'})
     @IsArray({message:'电影类型必须是数组'})
-    @Type(() => String) // 如果需要字符串数组 则写中每一项的类型
+    @Type(() => String) // 如果需要字符串数组 则写每一项的类型
     public types:string[];
 
     @IsNotEmpty({message:'上映地区不可以为空'})
@@ -42,27 +43,11 @@ export class Movie {
     @Type(() => String)
     public poster:string; // 海报
 
-    // 验证当前电影对象
-    public async validateThis(skipMissing = false):Promise<string[]> {
-       const errors = await validate(this,{
-        skipMissingProperties:skipMissing
-       });
-       const temp = errors.map(e => Object.values(e!.constraints!));
-       const result:string[] = [];
-       temp.forEach(t => {
-            result.push(...t);
-       })
-       return result
-    }
-
     /**
      * 平面对象转换 Movie 对象
      * @param plainObject 平面对象
      */
-    public static transform(plainObject:object):Movie {
-        if(plainObject instanceof Movie) {
-            return plainObject;
-        }
-        return plainToClass(Movie,plainObject);
+    public static transForm (plainObject:object):Movie {
+        return super.baseTransform(Movie,plainObject);
     }
 }
