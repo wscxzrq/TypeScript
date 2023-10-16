@@ -3,7 +3,6 @@ import { IMovie } from './../db/MovieSchema';
 import { MovieModel } from "../db";
 import { SearchCondition } from '../entities/searchConditions';
 import { ISearchResult } from '../entities/CommonTypes';
-
 export class MovieService {
     public static async add (movie:Movie):Promise<IMovie | string[]> {
         // 1.转换类型
@@ -38,10 +37,10 @@ export class MovieService {
         return await MovieModel.findById({_id:id});
     } 
 
-    /**
-     * 根据条件查询数据
-     * @param condition page limit key
-     */
+    // /**
+    //  * 根据条件查询数据
+    //  * @param condition page limit key
+    //  */
     public static async find(condition:SearchCondition):Promise<ISearchResult<IMovie>> {
         // 1.转换类型
         const SearchObj = SearchCondition.transform(condition);
