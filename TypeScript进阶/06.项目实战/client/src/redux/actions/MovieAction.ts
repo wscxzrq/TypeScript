@@ -1,7 +1,8 @@
+import { SearchCondition } from './../../../../server/src/entities/searchConditions';
 import { ISearchConditions } from "../../services/CommonType"
 import { IMovie } from "../../services/MovieService"
 import { IAction } from "./ActionTypes"
-
+import { ThunkAction} from "redux-thunk"
 // action 的创建函数
 export type saveMoviesAction = IAction<"movie_save",{
   movies:IMovie[],
@@ -60,6 +61,13 @@ function deleteAction(id:string):DeleteAction {
 }
 
 export type MovieActions = saveMoviesAction | SetLoadingAction | SetConditionAction | DeleteAction
+
+// 根据条件从服务器获取电影数据
+// function fetchMovies(condition:SearchCondition):ThunkAction {
+//   return (_dispatch: any,getState: any) => {
+
+//   }
+// }
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   saveMoviesAction,
