@@ -1,9 +1,9 @@
 // 描述电影列表的状态类型
 
+import { Reducer } from "react";
 import { ISearchConditions } from "../../services/CommonType";
 import { IMovie } from "../../services/MovieService";
-import { IAction } from "../actions/ActionTypes";
-import { MovieActions } from "../actions/MovieAction";
+import { DeleteAction, MovieActions, SetConditionAction, SetLoadingAction, saveMoviesAction } from "../actions/MovieAction";
 
 // Required 是 TypeScript 的内置工具之一，接受一个泛型参数，返回一个新的类型，并将其中所有属性变为必填属性 
 export type IMovieCondition = Required<ISearchConditions>
@@ -45,6 +45,57 @@ const defaultState:IMovieState = {
   isLoading:false
 }
 
+type MovieReducer<A> = Reducer<IMovieState,A>
+
+const saveMovie:MovieReducer<saveMoviesAction> = function (state,action) {
+  return {
+    ...state,
+    data:action.payload.movies,
+    total:action.payload.total
+  }
+}
+
+const setCondition:MovieReducer<SetConditionAction> = function (state,action) {
+  return {
+    ...state,
+    condition:{
+      ...state.condition,
+      ...action.payload
+    }
+  }
+}
+
+const setLoading:MovieReducer<SetLoadingAction> = function (state,action) {
+  return {
+    ...state,
+    isLoading:action.payload
+  }
+}
+
+const deleteMovie:MovieReducer<DeleteAction> = function (state,action) {
+  return {
+    ...state,
+    data:state.data.filter(m => m._id !== action.payload),
+    total:state.total - 1
+  }
+}
+
+// eslint-disable-next-line import/no-anonymous-default-export
 export default function (state:IMovieState = defaultState , action:MovieActions) {
-  // action.
+  switch (action.type) {
+    case "movie_delete":
+      deleteMovie(state,action);
+      break;
+    case "move_setLoading":
+      setLoading(state,action);
+      break
+    case "movie_save":
+      saveMovie(state,action);
+      break
+    case "movie_setConition":
+      setCondition(state,action);
+      break
+    default:
+      break;
+  }
 }

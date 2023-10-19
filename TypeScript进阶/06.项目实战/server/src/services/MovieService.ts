@@ -37,10 +37,10 @@ export class MovieService {
         return await MovieModel.findById({_id:id});
     } 
 
-    // /**
-    //  * 根据条件查询数据
-    //  * @param condition page limit key
-    //  */
+    /**
+     * 根据条件查询数据
+     * @param condition page limit key
+     */
     public static async find(condition:SearchCondition):Promise<ISearchResult<IMovie>> {
         // 1.转换类型
         const SearchObj = SearchCondition.transform(condition);
