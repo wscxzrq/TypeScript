@@ -23,3 +23,4 @@ root.render(
 // action:平面对象 plain object 它描述了数据变化的方式
 // reducer：数据变化的具体内容，它需要一个 action 来出发
 // store：表示存储数据的仓库
+// 副作用：redux-thunk、redux-saga、dva
