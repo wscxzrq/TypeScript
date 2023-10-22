@@ -40,7 +40,7 @@ export type SetConditionAction = IAction<"movie_setConition",ISearchConditions>
  * @param condition 
  * @returns 
  */
-function SetConditionAction(condition:ISearchConditions):SetConditionAction {
+function setConditionAction(condition:ISearchConditions):SetConditionAction {
   return {
     type:"movie_setConition",
     payload:condition
@@ -68,7 +68,7 @@ function fetchMovies(condition:ISearchConditions):ThunkAction<Promise<void>,IRoo
     // 1.设置加载状态
     dispatch(setLoadingAction(true));
     // 2.设置条件
-    dispatch(SetConditionAction(condition));
+    dispatch(setConditionAction(condition));
     // 3.获取服务器数据
     const curCondition = getState().movie.condition;
     const resp = await MovieService.getMovies(curCondition);
@@ -92,7 +92,7 @@ function deleteMovie(id:string) :ThunkAction<Promise<void>,IRootState,any,MovieA
 export default {
   saveMoviesAction,
   setLoadingAction,
-  SetConditionAction,
+  setConditionAction,
   deleteAction,
   fetchMovies,
   deleteMovie,
