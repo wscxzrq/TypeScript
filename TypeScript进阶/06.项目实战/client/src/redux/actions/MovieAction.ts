@@ -1,8 +1,8 @@
-import { SearchCondition } from './../../../../server/src/entities/searchConditions';
 import { ISearchConditions } from "../../services/CommonType"
-import { IMovie } from "../../services/MovieService"
+import { IMovie, MovieService } from "../../services/MovieService"
 import { IAction } from "./ActionTypes"
 import { ThunkAction} from "redux-thunk"
+import { IRootState } from '../reducers/RootReducer';
 // action 的创建函数
 export type saveMoviesAction = IAction<"movie_save",{
   movies:IMovie[],
@@ -40,7 +40,7 @@ export type SetConditionAction = IAction<"movie_setConition",ISearchConditions>
  * @param condition 
  * @returns 
  */
-function setCondition(condition:ISearchConditions):SetConditionAction {
+function SetConditionAction(condition:ISearchConditions):SetConditionAction {
   return {
     type:"movie_setConition",
     payload:condition
@@ -63,15 +63,37 @@ function deleteAction(id:string):DeleteAction {
 export type MovieActions = saveMoviesAction | SetLoadingAction | SetConditionAction | DeleteAction
 
 // 根据条件从服务器获取电影数据
-// function fetchMovies(condition:SearchCondition):ThunkAction {
-//   return (_dispatch: any,getState: any) => {
+function fetchMovies(condition:ISearchConditions):ThunkAction<Promise<void>,IRootState,any,MovieActions> {
+  return async (dispatch,getState) => {
+    // 1.设置加载状态
+    dispatch(setLoadingAction(true));
+    // 2.设置条件
+    dispatch(SetConditionAction(condition));
+    // 3.获取服务器数据
+    const curCondition = getState().movie.condition;
+    const resp = await MovieService.getMovies(curCondition);
+    // 4.更改仓库数据
+    dispatch(saveMoviesAction(resp.data,resp.total))
+    // 关闭加载状态
+    dispatch(setLoadingAction(false));
+  }
+}
 
-//   }
-// }
+// 根据条件从服务器删除电影数据
+function deleteMovie(id:string) :ThunkAction<Promise<void>,IRootState,any,MovieActions>  {
+  return async (dispatch) => {
+    dispatch(setLoadingAction(true));
+    await MovieService.delete(id);
+    dispatch(deleteAction(id)); // 删除本地仓库中的数据
+    dispatch(setLoadingAction(false));
+  }
+}
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   saveMoviesAction,
   setLoadingAction,
-  setCondition,
-  deleteAction
+  SetConditionAction,
+  deleteAction,
+  fetchMovies,
+  deleteMovie,
 }
