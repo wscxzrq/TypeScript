@@ -1,5 +1,6 @@
 import React from 'react'
 // 生成类组件
+// eslint-disable-next-line import/no-anonymous-default-export
 export default class extends React.Component {
   render() {
     return(
