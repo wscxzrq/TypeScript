@@ -4,7 +4,7 @@ export default class extends React.Component {
     render(){
         return (
             <h1>
-                电影列表页
+                欢迎使用电影管理系统
             </h1>
         );
     }

@@ -1,9 +1,11 @@
-import React from 'react'
-// 生成类组件
+import React from "react"
+
 export default class extends React.Component {
-  render() {
-    return(
-      <h1>添加电影</h1>
-    )
-  }
+    render(){
+        return (
+            <h1>
+                添加电影页
+            </h1>
+        );
+    }
 }
