@@ -1,5 +1,5 @@
-import { ISearchConditions } from "../../services/CommonType"
-import { IMovie, MovieService } from "../../services/MovieService"
+import { ISearchConditions } from "../../pages/services/CommonType"
+import { IMovie, MovieService } from "../../pages/services/MovieService"
 import { IAction } from "./ActionTypes"
 import { ThunkAction} from "redux-thunk"
 import { IRootState } from '../reducers/RootReducer';

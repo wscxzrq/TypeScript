@@ -1,8 +1,8 @@
 // 描述电影列表的状态类型
 
 import { Reducer } from "react";
-import { ISearchConditions } from "../../services/CommonType";
-import { IMovie } from "../../services/MovieService";
+import { ISearchConditions } from "../../pages/services/CommonType";
+import { IMovie } from "../../pages/services/MovieService";
 import { DeleteAction, MovieActions, SetConditionAction, SetLoadingAction, saveMoviesAction } from "../actions/MovieAction";
 
 // Required 是 TypeScript 的内置工具之一，接受一个泛型参数，返回一个新的类型，并将其中所有属性变为必填属性 
