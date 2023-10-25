@@ -24,6 +24,12 @@ function mapDispatchToProps(dispatch:Dispatch<any>):IMovieTableEvents {
     },
     onSwitchChange(type,newState,id) {
       dispatch(MovieAction.changeSwitch(type,newState,id));
+    },
+    async onDelete(id) {
+     await dispatch(MovieAction.deleteMovie(id));
+    },
+    onChange(newPage) {
+      dispatch(MovieAction.fetchMovies({page:newPage}))
     }
   }
 }

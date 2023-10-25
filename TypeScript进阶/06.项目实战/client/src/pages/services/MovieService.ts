@@ -44,8 +44,12 @@ export class MovieService {
 
   // 分页查找
   public static async getMovies(condition:ISearchConditions):Promise<IResponsePageData<IMovie> > {
-    const { data } = await axios.get('/api/movie',{params:condition});
-    return data
+    return new Promise(resolve => {
+      setTimeout(async () => {
+        const { data } = await axios.get('/api/movie',{params:condition});
+        resolve(data)
+      },1500)
+    })
   }
   
 }
