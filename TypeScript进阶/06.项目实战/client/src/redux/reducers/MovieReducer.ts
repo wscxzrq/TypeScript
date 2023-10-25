@@ -3,7 +3,7 @@
 import { Reducer } from "react";
 import { ISearchConditions } from "../../pages/services/CommonType";
 import { IMovie } from "../../pages/services/MovieService";
-import { DeleteAction, MovieActions, SetConditionAction, SetLoadingAction, saveMoviesAction } from "../actions/MovieAction";
+import { DeleteAction, MovieActions, MovieChangeSwitchAction, SetConditionAction, SetLoadingAction, saveMoviesAction } from "../actions/MovieAction";
 
 // Required 是 TypeScript 的内置工具之一，接受一个泛型参数，返回一个新的类型，并将其中所有属性变为必填属性 
 export type IMovieCondition = Required<ISearchConditions>
@@ -37,7 +37,6 @@ export interface IMovieState {
 /**
  * 默认电影状态
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const defaultState:IMovieState = {
   data:[],
   condition:{
@@ -89,7 +88,26 @@ const deleteMovie:MovieReducer<DeleteAction> = function (state,action) {
   }
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
+const changeSwitch:MovieReducer<MovieChangeSwitchAction> = function (state,action) {
+  const movie = state.data.find(d => d._id === action.payload.id);
+  if(!movie) {
+    return state;
+  }
+  const newMovie = {...movie};
+  newMovie[action.payload.type] = action.payload.newVal;
+  // 将对象重新放入数组
+  const newData = state.data.map(d => {
+    if(d._id == action.payload.id) {
+      return newMovie
+    }
+    return d
+  })
+  return {
+    ...state,
+    data:newData
+  }
+}
+
 export default function (state:IMovieState = defaultState , action:MovieActions) {
   switch (action.type) {
     case "movie_delete":
@@ -100,6 +118,8 @@ export default function (state:IMovieState = defaultState , action:MovieActions)
       return saveMovie(state,action);
     case "movie_setConition":
       return setCondition(state,action);
+    case 'movie_switch':
+      return changeSwitch(state,action);
     default:
       return state
   }

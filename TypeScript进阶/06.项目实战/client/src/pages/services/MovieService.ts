@@ -22,7 +22,10 @@ export class MovieService {
   }
 
   // 修改
-  public static async edit(id:string,movie:IMovie):Promise<IResponseError | IResponseData<true> > {
+  /**
+   * Partial 类型演算，所有属性全部可选
+   */
+  public static async edit(id:string,movie:Partial<IMovie>):Promise<IResponseError | IResponseData<true> > {
     const { data } = await axios.put('/api/movie'+ id,movie);
     return data
   }

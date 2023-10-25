@@ -19,3 +19,10 @@ export interface ISearchConditions {
   limit?:number
   key?:string
 }
+
+// switch 改变的枚举
+export enum SwitchType {
+  isHot = 'isHot',
+  isComing = 'isComing',
+  isClasic = 'isClasic'
+}
