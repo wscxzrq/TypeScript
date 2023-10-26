@@ -1,6 +1,6 @@
 import React from 'react'
 import { IMovieState } from '../redux/reducers/MovieReducer'
-import {Table,Switch,Button,message,Popconfirm} from 'antd'
+import {Table,Switch,Button,message,Popconfirm,Icon,Input } from 'antd'
 import { ColumnProps, PaginationConfig } from 'antd/lib/table'
 import { IMovie } from '../pages/services/MovieService'
 import defaultposterImg from '../assets/defaultposter.png'
@@ -22,7 +22,15 @@ export interface IMovieTableEvents {
   /**
    *  分页事件
    */
-  onChange:(newPage:number) => void 
+  onChange:(newPage:number) => void,
+  /**
+   * 根据名称查找电影
+   */
+  onKeyChange:(key:string) => void
+  /**
+   * 点击按钮进行搜索电影
+   */
+  onSearch:() => void
 }
 
 
@@ -33,6 +41,37 @@ export default class extends React.Component<IMovieState & IMovieTableEvents> {
       this.props.onLoad();
     }
   }
+
+
+  // 筛选
+  private getFilterDropDown(p:any) {
+    return (
+      <div style={{ padding: 8 }}>
+        <Input
+          value={this.props.condition.key}
+          onChange={e => this.props.onKeyChange(e.target.value)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+          onPressEnter={this.props.onSearch}
+        />
+        <Button
+          type="primary"
+          icon="search"
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+          onClick={this.props.onSearch}
+        >
+          搜索
+        </Button>
+        <Button  size="small" style={{ width: 90 }} onClick={() => {
+          this.props.onKeyChange('')
+          this.props.onSearch()
+        }}>
+          重置
+        </Button>
+      </div>
+    )
+  }
+
   // 获取列的配置
   private getColums():ColumnProps<IMovie>[] {
     return [
@@ -40,10 +79,15 @@ export default class extends React.Component<IMovieState & IMovieTableEvents> {
         title:'类型',
         dataIndex:'poster',
         render: poster => {
-          return poster ? <img className='tablePoster' src={poster}></img> : <img className='tablePoster' src={defaultposterImg}></img>
+          return poster ? <img alt='' className='tablePoster' src={poster}></img> : <img alt='' className='tablePoster' src={defaultposterImg}></img>
         }
       },
-      {title:'电影名称',dataIndex:'name'},
+      {
+        title:'电影名称',
+        dataIndex:'name',
+        filterDropdown: this.getFilterDropDown.bind(this),
+        filterIcon:<Icon type='search'></Icon>
+      },
       {
         title:'类型',
         dataIndex:'types',

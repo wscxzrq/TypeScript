@@ -30,7 +30,15 @@ function mapDispatchToProps(dispatch:Dispatch<any>):IMovieTableEvents {
     },
     onChange(newPage) {
       dispatch(MovieAction.fetchMovies({page:newPage}))
-    }
+    },
+    onKeyChange(key) {
+      dispatch(MovieAction.fetchMovies({key}))
+    },
+    onSearch() {
+      dispatch(MovieAction.fetchMovies({
+        page:1,
+      }))
+    },
   }
 }
 export default class extends React.Component {

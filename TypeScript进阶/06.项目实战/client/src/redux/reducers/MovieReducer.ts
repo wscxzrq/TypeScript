@@ -97,7 +97,7 @@ const changeSwitch:MovieReducer<MovieChangeSwitchAction> = function (state,actio
   newMovie[action.payload.type] = action.payload.newVal;
   // 将对象重新放入数组
   const newData = state.data.map(d => {
-    if(d._id == action.payload.id) {
+    if(d._id === action.payload.id) {
       return newMovie
     }
     return d
