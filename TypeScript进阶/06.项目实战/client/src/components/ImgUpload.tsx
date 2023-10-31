@@ -6,7 +6,7 @@ import { IResponseData, IResponseError } from "../pages/services/CommonType";
 
 interface IImgUploaderProps {
   value?:string // 当前图片地址
-  onChange:(imgUrl:string) => void // 上传成功后的触发事件
+  onChange?:(imgUrl:string) => void // 上传成功后的触发事件
 }
 
 interface IImgState {
@@ -65,7 +65,9 @@ export default class extends React.Component<IImgUploaderProps,IImgState> {
       message.error('上传失败')
     }else {
       // 触发回调
-      this.props.onChange(resp.data!)
+      if(this.props.onChange) {
+        this.props.onChange(resp.data!)
+      }
     }
   }
 
@@ -74,7 +76,9 @@ export default class extends React.Component<IImgUploaderProps,IImgState> {
       <div>
       <Upload action='/api/upload' name="imgfile" accept=".jpg,.png,.gif" listType="picture-card" fileList={this.getFileList()}
         customRequest={this.handleRequest.bind(this)} onRemove={() => {
-          this.props.onChange('')
+          if(this.props.onChange) {
+            this.props.onChange('')
+          }
         }} onPreview={() => {
           this.state.showModal = true
         }}>
