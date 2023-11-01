@@ -1,17 +1,37 @@
 import React from "react"
 import { RouteComponentProps } from "react-router";
+import MovieForm from "../../components/MovieForm";
+import { IMovie, MovieService } from "../services/MovieService";
 
 interface IParams {
-    id: string
+  id: string
 }
 
-export default class extends React.Component<RouteComponentProps<IParams>> {
-    render() {
+interface EditPageState {
+  movie?:IMovie
+}
+export default class extends React.Component<RouteComponentProps<IParams>,EditPageState> {
+  state:EditPageState = {
+    movie:undefined
+  }  
+
+  async componentDidMount() {
+    const resp = await MovieService.getMovieById(this.props.match.params.id)
+    if(resp.data) {
+     this.setState({
+      movie:resp.data
+     }) 
+    }
+  }
+  render() {
         return (
-            <h1>
-                修改电影页
-                {this.props.match.params.id}
-            </h1>
+          <MovieForm
+            movie={this.state.movie} 
+            onSubmit={async (movie) => {
+              const resp = await MovieService.edit(this.props.match.params.id,movie)
+              return resp.data ? '' : resp.err;
+          }}>
+          </MovieForm>
         );
     }
 }
